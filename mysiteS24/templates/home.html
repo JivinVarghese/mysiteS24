@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Club Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myapp/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Welcome to the University Tech Club</h1>
+        <p>The University Tech Club is dedicated to bringing together students interested in technology and innovation. We offer a range of activities, resources, and opportunities to help you enhance your tech skills and network with like-minded individuals.</p>
+        <ul>
+            <li>Access to the latest technology resources</li>
+            <li>Workshops and seminars by industry experts</li>
+            <li>Networking events with professionals</li>
+            <li>Hands-on projects and hackathons</li>
+            <li>Opportunities for leadership and growth</li>
+        </ul>
+        <div class="images">
+            <img src="{% static 'myapp/images/club1.jpg' %}" alt="Club Activity 1">
+            <img src="{% static 'myapp/images/club2.jpg' %}" alt="Club Activity 2">
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 University Tech Club</p>
+    </footer>
+</body>
+</html>

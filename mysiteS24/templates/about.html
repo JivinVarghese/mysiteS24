@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About University Club</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myapp/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>About the University Tech Club</h1>
+        <p>The University Tech Club was founded in 2010 with the mission to foster a community of tech enthusiasts on campus. Over the years, the club has grown significantly, providing numerous opportunities for members to develop their skills and pursue their passions.</p>
+        <p>Our achievements include organizing successful hackathons, hosting renowned guest speakers, and collaborating with tech companies for internships and job placements.</p>
+        <h2>Our Milestones</h2>
+        <ol>
+            <li>2010 - Club founded</li>
+            <li>2012 - First annual hackathon</li>
+            <li>2015 - Partnership with local tech companies</li>
+            <li>2018 - Membership reached 500 students</li>
+            <li>2021 - Launch of the Tech Club Mentorship Program</li>
+        </ol>
+        <div class="images">
+            <img src="{% static 'myapp/images/club3.jpg' %}" alt="Club Activity 3">
+            <img src="{% static 'myapp/images/club4.jpg' %}" alt="Club Activity 4">
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 University Tech Club</p>
+    </footer>
+</body>
+</html>
