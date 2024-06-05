@@ -1,0 +1,127 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+staticfiles/
+
+# Django migrations
+**/migrations/
+**/migrations/*
+
+# If your Django project uses local settings
+local_settings.py
+
+# If you are using coverage tool
+htmlcov/
+.coverage
+.coverage.*
+.cache
+
+# Test-related
+.tox/
+.nox/
+*.cover
+coverage.xml
+*.coveragerc
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# Pytype
+.pytype/
+
+# Pylint
+pylint-report.txt
+pylint-out.txt
+
+# Environments
+.env
+.envrc
+*.env
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.sublime-project
+*.sublime-workspace
+
+# MacOS
+.DS_Store
+
+# Thumbnails
+*_thumb.*
+
+# Ignoring local files and directories
+.vagrant/
+*.retry
+*~
+
+# Docker
+*.log
+*.pid
+*.pid.lock
+__pycache__/
+docker-compose.override.yml
+logs/
+tmp/
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pids/
+*.seed
+*.pid
+*.tar
+*.tar.gz
+*.tgz
+*.diff
+*.patch
+
+# Windows specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# JetBrains
+.idea/
+
+# End of the file
