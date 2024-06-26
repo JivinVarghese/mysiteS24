@@ -6,4 +6,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
     path('<int:book_id>/', views.detail, name='detail'),
+    path('feedback/', views.getFeedback, name='feedback')
 ]
