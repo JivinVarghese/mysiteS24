@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Book
 from .forms import FeedbackForm
+from .forms import SearchForm
 
 def home(request):
     return render(request, 'home.html')
@@ -32,3 +33,27 @@ def getFeedback(request):
     else:
         form = FeedbackForm()
         return render(request, 'myapp/feedback.html', {'form':form})
+
+def findbooks(request):
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            category = form.cleaned_data['category']
+            max_price = form.cleaned_data['max_price']
+
+            if category:
+                booklist = Book.objects.filter(category=category, price__lte=max_price)
+            else:
+                booklist = Book.objects.filter(price__lte=max_price)
+
+            return render(request, 'myapp/results.html', {
+                'name': name,
+                'category': category,
+                'booklist': booklist
+            })
+        else:
+            return HttpResponse('Invalid data')
+    else:
+        form = SearchForm()
+        return render(request, 'myapp/findbooks.html', {'form': form})

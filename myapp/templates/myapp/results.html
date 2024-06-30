@@ -1,0 +1,16 @@
+{% extends 'myapp/base.html' %}
+
+{% block body_block %}
+    Hello {{ name }}!
+    {% if category %}
+        You selected the category: {{ category }}.
+    {% else %}
+        You did not select a category.
+    {% endif %}
+    Here are the books within your maximum price range:
+    <ul>
+        {% for book in booklist %}
+            <li>{{ book.title }} - ${{ book.price }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
