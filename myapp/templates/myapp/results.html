@@ -1,0 +1,15 @@
+{% extends 'myapp/base.html' %}
+
+{% block body_block %}
+    <p>Hello {{ name }}</p>
+    {% if category %}
+        <p>Here are the books in the "{{ category }}" category priced under {{ form.max_price }}:</p>
+    {% else %}
+        <p>Here are all books priced under {{ form.max_price }}:</p>
+    {% endif %}
+    <ul>
+        {% for book in booklist %}
+            <li>{{ book.title }} by {{ book.author }} - ${{ book.price }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
