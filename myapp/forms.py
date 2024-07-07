@@ -1,15 +1,15 @@
 from django import forms
-from .models import Book
+from .models import Book, Order, Review
 class FeedbackForm(forms.Form):
     FEEDBACK_CHOICES = [
         ('B', 'Borrow'),
         ('P', 'Purchase'),
     ]
-    feedback =   forms.ChoiceField(choices = FEEDBACK_CHOICES)
+    feedback =   forms.MultipleChoiceField(choices = FEEDBACK_CHOICES, widget=forms.CheckboxSelectMultiple)
 
 
 class SearchForm(forms.Form):
-    name = forms.CharField(label='Your Name', required=False)
+    name = forms.CharField(label='Enter name', required=False)
     category = forms.ChoiceField(
         choices=[('', 'Select a category:')] + Book.CATEGORY_CHOICES,
         required=False,
@@ -20,4 +20,18 @@ class SearchForm(forms.Form):
         min_value=0,
         required=True
     )
+#lab 8
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['books', 'member', 'order_type']
+        widgets = {'books': forms.CheckboxSelectMultiple(), 'order_type':forms.RadioSelect()}
+        labels = {'member': u'Member name', }
 
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['reviewer','book','rating','comments']
+        widgets = {'book':forms.RadioSelect()}
+        labels = {'reviewer': 'Please enter a valid email', 
+                  'rating': 'Rating: An integer between 1 (worst) and 5 (best)',}
