@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from .models import Book, Order, Review
 class FeedbackForm(forms.Form):
     FEEDBACK_CHOICES = [
@@ -35,3 +36,9 @@ class ReviewForm(forms.ModelForm):
         widgets = {'book':forms.RadioSelect()}
         labels = {'reviewer': 'Please enter a valid email', 
                   'rating': 'Rating: An integer between 1 (worst) and 5 (best)',}
+        
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput())
+    password = forms.CharField(widget=forms.PasswordInput())

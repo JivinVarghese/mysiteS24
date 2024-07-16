@@ -1,17 +1,42 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Book, Review
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.utils import timezone
+from datetime import datetime, timedelta
+from django.db.models import Avg
+from .models import Book, Review, Member
 from .forms import FeedbackForm
-from .forms import SearchForm, OrderForm, ReviewForm
+from .forms import SearchForm, OrderForm, ReviewForm, LoginForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required,user_passes_test
+import math
+import random
 
 def home(request):
     return render(request, 'home.html')
 def index(request):
+    last_login = request.session.get('last_login')
+
+    if last_login:
+        last_login_time = datetime.fromisoformat(last_login)
+        message = f'Your last login was on {last_login_time.strftime("%Y-%m-%d %H:%M:%S")}'
+    else:
+        message = 'Your last login was more than one hour ago'
     booklist = Book.objects.all().order_by('id')[:10]
-    return render(request, 'myapp/index0.html', {'booklist': booklist})
+    return render(request, 'myapp/index0.html', {'booklist': booklist, 'message':message})
 
 def about(request):
-    return render(request, 'myapp/about0.html')
+    mynum = request.COOKIES.get('lucky_num')
+
+    if not mynum:
+        mynum = random.randint(1, 100)
+        response = render(request, 'myapp/about0.html', {'mynum': mynum})
+        expires_at = timezone.now() + timedelta(minutes=5)
+        response.set_cookie('lucky_num', mynum, expires=expires_at)
+        return response
+
+    return render(request, 'myapp/about0.html', {'mynum': mynum})
+    # return render(request, 'myapp/about0.html')
 
 def detail(request, book_id):
     book = Book.objects.get(id=book_id)
@@ -92,7 +117,10 @@ def review(request):
         form = ReviewForm(request.POST)
         if form.is_valid():
             rating = form.cleaned_data['rating']
-            if 1 <= rating <= 5:
+            sq_root_rating = math.sqrt(rating)
+            # print(type(sq_root_rating) == int)
+            # if 1 <= rating <= 5:
+            if type(sq_root_rating) == int:
                 review = form.save(commit=False)
                 review.save()
                 
@@ -103,7 +131,8 @@ def review(request):
 
                 return redirect('/myapp/')  # Redirect to the main page after successful submission
             else:
-                return HttpResponse('You must enter a rating between 1 and 5!')
+                # return HttpResponse('You must enter a rating between 1 and 5!')
+                return HttpResponse('You must enter a rating must be a perfect square.')
         else:
             return HttpResponse('Form submission error. Please check your input.')
     else:
@@ -111,3 +140,45 @@ def review(request):
 
     return render(request, 'myapp/review.html', {'form': form})
 
+
+# Create your views here.
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password) 
+        if user:
+            if user.is_active:
+                login(request, user)
+                request.session['last_login'] = str(timezone.now())
+                request.session.set_expiry(3600)
+                return HttpResponseRedirect(reverse('myapp:index'))
+            else:
+                return HttpResponse('Your account is disabled.')
+        else:
+            return HttpResponse('Invalid login details.') 
+    else:
+        return render(request, 'myapp/login.html', {'form':LoginForm})
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse(('myapp:index')))
+
+
+@login_required
+def chk_reviews(request, book_id):
+    try:
+        member = Member.objects.get(username=request.user.username)
+    except Member.DoesNotExist:
+        return HttpResponse('You are not a registered member!')
+
+    book = Book.objects.get(pk=book_id)
+    avg_rating = Review.objects.filter(book=book).aggregate(Avg('rating'))['rating__avg']
+
+    if avg_rating is None:
+        message = 'There are no reviews submitted for this book.'
+    else:
+        message = f'The average rating for the book is {avg_rating:.2f}.'
+
+    return render(request, 'myapp/chk_reviews.html', {'message': message})

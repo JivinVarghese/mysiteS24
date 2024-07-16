@@ -5,7 +5,9 @@
     <title>eBook App</title>
   </head>
   <body>
-    {% if booklist %}
+    {% csrf_token %} {% if booklist %} {% if user.is_authenticated %}
+    <p>{{ message }}</p>
+    {% else %} You are not logged in {% endif %}
     <h2>List of Books</h2>
     <ol>
       {% for book in booklist %}
